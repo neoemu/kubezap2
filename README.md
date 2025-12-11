@@ -54,6 +54,46 @@ helm install kubezap kubezap/kubezap \
   --set argocd.webhook.secret=your-secret
 ```
 
+## 🚀 Deploy to Vercel (Frontend Only - Demo Mode)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/kubezap)
+
+### Steps:
+1. Click the button above or go to [Vercel](https://vercel.com)
+2. Import this repository
+3. Set the following environment variables:
+   ```
+   NEXT_PUBLIC_API_URL=https://your-backend-url.com/api/v1
+   ```
+4. Deploy!
+
+**Note**: The frontend can run standalone in demo mode using mock data. For full functionality, you'll need to deploy the backend separately (Railway, Render, or your own infrastructure).
+
+### Backend Deployment Options
+
+For production, you'll need to deploy the FastAPI backend separately:
+
+**Option A: Railway**
+```bash
+# Install Railway CLI
+npm i -g @railway/cli
+
+# Deploy backend
+cd backend
+railway init
+railway up
+```
+
+**Option B: Render**
+1. Push your code to GitHub
+2. Go to [Render Dashboard](https://dashboard.render.com)
+3. Create a new Web Service pointing to your repo
+4. Set build command: `pip install -r requirements.txt`
+5. Set start command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+
+**Option C: Google Cloud Run / AWS Lambda**
+Use the included `Dockerfile` for containerized deployment.
+
 ## Architecture
 
 1. **Webhook Receiver**: Listens to ArgoCD/Flux sync events.
@@ -67,6 +107,20 @@ helm install kubezap kubezap/kubezap \
 - **Frontend**: Next.js 14, Tailwind CSS, Shadcn/ui, Recharts.
 - **Backend**: FastAPI, Python 3.11, SQLModel.
 - **AI**: Integration with OpenAI/Anthropic (Mocked for MVP).
+
+## Environment Variables
+
+### Frontend (.env.local)
+```bash
+NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1  # Change to your backend URL in production
+```
+
+### Backend (.env)
+```bash
+# Optional: Configure AI providers
+OPENAI_API_KEY=your-key-here
+ANTHROPIC_API_KEY=your-key-here
+```
 
 ## Roadmap
 
